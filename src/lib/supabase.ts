@@ -86,18 +86,12 @@ export function errorForConsole(error: unknown): unknown {
 }
 
 // Database types
-export interface Card {
+export interface CatalogCard {
   id: string;
-  name: string;
-  description: string;
-  game: string;
-  rarity: string;
-  condition: string;
-  price: number;
-  image_url?: string;
-  seller_id: string;
-  created_at: string;
-  updated_at: string;
+  name: string
+  number: string;
+  color_type: string;
+  supertype: string;
 }
 
 export interface User {
