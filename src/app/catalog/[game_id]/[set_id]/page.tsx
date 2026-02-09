@@ -76,12 +76,18 @@ const fetchGameId = async (
 
 const fetchSet = async (
 	gameId: string | null,
-	setSlug: string
-): Promise<{ set: CardSet | null; errorMessage: string | null }> => {
+	setSlug: string,
+	language: Language
+): Promise<{
+	set: CardSet | null;
+	localizedName: string | null;
+	errorMessage: string | null;
+}> => {
 	const normalizedSlug = setSlug?.trim();
 	if (!normalizedSlug || normalizedSlug === 'undefined') {
 		return {
 			set: null,
+			localizedName: null,
 			errorMessage: 'Missing set slug in URL',
 		};
 	}
@@ -89,8 +95,49 @@ const fetchSet = async (
 	if (!gameId) {
 		return {
 			set: null,
+			localizedName: null,
 			errorMessage: 'Missing game_id for set query',
 		};
+	}
+
+	if (language !== 'en') {
+		const { data: localizationData, error: localizationError } = await supabase
+			.from('set_localizations')
+			.select('set_id, name, local_set_slug, master_set_slug, language')
+			.eq('language', language)
+			.ilike('local_set_slug', `${normalizedSlug}%`)
+			.maybeSingle();
+
+		if (localizationError) {
+			return {
+				set: null,
+				localizedName: null,
+				errorMessage: localizationError.message,
+			};
+		}
+
+		if (localizationData) {
+			const { data, error } = await supabase
+				.from('sets')
+				.select('set_id, game_id, name, code, slug')
+				.eq('game_id', gameId)
+				.ilike('slug', `${localizationData.master_set_slug}%`)
+				.maybeSingle();
+
+			if (error || !data) {
+				return {
+					set: null,
+					localizedName: localizationData.name,
+					errorMessage: error?.message ?? 'Unknown error fetching set',
+				};
+			}
+
+			return {
+				set: data,
+				localizedName: localizationData.name,
+				errorMessage: null,
+			};
+		}
 	}
 
 	const { data, error } = await supabase
@@ -103,11 +150,12 @@ const fetchSet = async (
 	if (error || !data) {
 		return {
 			set: null,
+			localizedName: null,
 			errorMessage: error?.message ?? 'Unknown error fetching set',
 		};
 	}
 
-	return { set: data, errorMessage: null };
+	return { set: data, localizedName: null, errorMessage: null };
 };
 
 const fetchCards = async (setId: string): Promise<Card[]> => {
@@ -153,13 +201,15 @@ export default async function SetDetailPage({
 	const gameSlug = resolvedParams.game_id;
 	const language = normalizeLanguage(searchParams?.lang);
 	const gameResult = await fetchGameId(gameSlug);
-	const setResult = await fetchSet(gameResult.gameId, setSlug);
+	const setResult = await fetchSet(gameResult.gameId, setSlug, language);
 	const cards = setResult.set
 		? await fetchCards(setResult.set.set_id)
 		: [];
-	const localizedSetName = setResult.set
-		? await fetchSetLocalization(setResult.set.set_id, language)
-		: null;
+	const localizedSetName = setResult.localizedName
+		? setResult.localizedName
+		: setResult.set
+			? await fetchSetLocalization(setResult.set.set_id, language)
+			: null;
 	const errorMessage = gameResult.errorMessage ?? setResult.errorMessage;
 	const set = setResult.set;
 	const displayName = localizedSetName ?? set?.name;

@@ -3,7 +3,8 @@ import { supabase } from '@/lib/supabase';
 import type { CardSet, Game } from '@/lib/supabase';
 import { normalizeLanguage, type Language } from '@/lib/i18n';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 interface GamePageProps {
 	params: { game_id: string } | Promise<{ game_id: string }>;
@@ -77,7 +78,7 @@ const fetchSets = async (
 	language: Language
 ): Promise<{
 	sets: CardSet[];
-	localizations: Record<string, string>;
+	localizations: Record<string, { name: string; localSetSlug?: string }>;
 	errorMessage: string | null;
 }> => {
 	if (!gameId) {
@@ -103,15 +104,26 @@ const fetchSets = async (
 	}
 
 	if (language === 'en' || data.length === 0) {
-		return { sets: data, localizations: {}, errorMessage: null };
+		return {
+			sets: data,
+			localizations: {},
+			errorMessage: null,
+		};
 	}
 
 	const setIds = data.map((set) => set.set_id);
 	const { data: localizationData, error: localizationError } = await supabase
 		.from('set_localizations')
-		.select('set_id, name, language')
+		.select('set_id, name, language, local_set_slug, master_set_slug')
 		.eq('language', language)
 		.in('set_id', setIds);
+
+	console.log('[catalog] set_localizations fetch', {
+		language,
+		setCount: setIds.length,
+		localizationCount: localizationData?.length ?? 0,
+		error: localizationError?.message ?? null,
+	});
 
 	if (localizationError || !localizationData) {
 		return {
@@ -121,9 +133,14 @@ const fetchSets = async (
 		};
 	}
 
-	const localizations = localizationData.reduce<Record<string, string>>(
+	const localizations = localizationData.reduce<
+		Record<string, { name: string; localSetSlug?: string }>
+	>(
 		(acc, localization) => {
-			acc[localization.set_id] = localization.name;
+			acc[localization.set_id] = {
+				name: localization.name,
+				localSetSlug: localization.local_set_slug ?? undefined,
+			};
 			return acc;
 		},
 		{}
@@ -135,10 +152,16 @@ const fetchSets = async (
 export default async function GameDetailPage({
 	params,
 	searchParams,
-}: GamePageProps & { searchParams?: { lang?: string } }) {
+}: GamePageProps & {
+	searchParams?: { lang?: string | string[] } | Promise<{ lang?: string | string[] }>;
+}) {
 	const resolvedParams = await Promise.resolve(params);
+	const resolvedSearchParams = await Promise.resolve(searchParams);
 	const gameSlug = resolvedParams.game_id;
-	const language = normalizeLanguage(searchParams?.lang);
+	const rawLang = Array.isArray(resolvedSearchParams?.lang)
+		? resolvedSearchParams?.lang[0]
+		: resolvedSearchParams?.lang;
+	const language = normalizeLanguage(rawLang);
 	const gameResult = await fetchGame(gameSlug);
 	const setsResult = await fetchSets(
 		gameResult.game?.game_id ?? null,
@@ -190,12 +213,21 @@ export default async function GameDetailPage({
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 							{sets.map((set) => {
 								const setSlug = set.slug?.trim() ?? '';
-								const setName = localizations[set.set_id] ?? set.name;
+								const localization = localizations[set.set_id];
+								const setName =
+									language === 'en'
+										? set.name
+										: localization?.name ?? set.name;
+								const localizedSlug = localization?.localSetSlug?.trim();
+								const hrefSlug =
+									language === 'en' || !localizedSlug
+										? setSlug
+										: localizedSlug;
 
 								return (
 									<Link
 										key={set.set_id}
-										href={`/catalog/${gameSlug}/${setSlug}${langParam}`}
+										href={`/catalog/${gameSlug}/${hrefSlug}${langParam}`}
 										className="group rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-sm hover:shadow-md transition-shadow"
 									>
 										<p className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">

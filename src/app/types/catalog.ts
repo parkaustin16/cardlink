@@ -18,6 +18,8 @@ export interface SetLocalization {
   set_id: string;
   local_set_id: string;
   name: string;
+  local_set_slug: string;
+  master_set_slug: string;
   language: string;
 }
 

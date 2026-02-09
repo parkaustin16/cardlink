@@ -24,9 +24,13 @@ export default function CatalogPage() {
 			if (!isMounted) return;
 
 			if (error || !data) {
+				console.log('[catalog] games fetch error', {
+					error: error?.message ?? null,
+				});
 				setGames([]);
 				setErrorMessage(error?.message ?? 'Unknown error fetching games');
 			} else {
+				console.log('[catalog] games fetch', { count: data.length });
 				setGames(data);
 				setErrorMessage(null);
 			}
