@@ -55,5 +55,10 @@ export interface Card {
   name: string;           // Base/English name
   number: string;         // e.g., "OP01-001"
   set_code: string;       // e.g., "OP01"
+  game: string;
+  rarity: string;
+  condition: string;
+  price: number;
+  image_url?: string | null;
   localizations?: CardLocalization[]; // Joined data
 }
