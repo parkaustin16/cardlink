@@ -65,7 +65,7 @@ export default function SellCard() {
       router.push(withLang('/marketplace'));
     } catch (err) {
       setError(formatSupabaseError(err));
-      console.error('Error listing card:', errorForConsole(err));
+      console.error('Error listing card:', errorForConsole('listCard', err));
     } finally {
       setLoading(false);
     }
