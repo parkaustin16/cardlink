@@ -23,7 +23,7 @@ export default function Marketplace() {
         .order('created_at', { ascending: false });
 
       if (gameFilter) {
-        query = query.eq('game', gameFilter);
+        query = query.eq('name', gameFilter);
       }
 
       if (rarityFilter) {
