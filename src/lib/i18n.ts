@@ -66,6 +66,7 @@ export const translations = {
     },
     languageNames: {
       en: 'English',
+      jp: 'Japanese',
       kr: 'Korean',
     } as Record<string, string>,
     games: {} as Record<string, string>,
@@ -123,6 +124,7 @@ export const translations = {
     },
     languageNames: {
       en: '영어',
+      jp: '일본어',
       kr: '한국어',
     } as Record<string, string>,
     games: {
