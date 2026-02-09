@@ -171,7 +171,8 @@ export default async function GameDetailPage({
 	const { game, errorMessage: gameError } = gameResult;
 	const { sets, localizations, errorMessage: setsError } = setsResult;
 	const langParam = language === 'en' ? '' : `?lang=${language}`;
-	const gameKey = (game?.slug ?? game?.name ?? '')
+	const normalizedSlug = (game?.slug ?? '').replace(/-[a-z]{2}$/i, '');
+	const gameKey = (normalizedSlug || game?.name || '')
 		.trim()
 		.toLowerCase()
 		.replace(/\s+/g, '-');
