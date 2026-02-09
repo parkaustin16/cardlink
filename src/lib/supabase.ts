@@ -1,10 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
 // 1. Import your types
-import { Card, CardSet, Game } from '@/types/catalog';
+import { Card, CardSet, Game } from '@/app/types/catalog';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = 'https://bvgeaihhvbyguxesdycc.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2VhaWhodmJ5Z3V4ZXNkeWNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwMzY5ODgsImV4cCI6MjA4NTYxMjk4OH0.OBIgOHvDZ1Hfwweqhar7uz14gG0RC38JKpV_2gBqfHQ';
 
 // 2. RE-EXPORT the types so other files can import them from here
 export type { Card, CardSet, Game };

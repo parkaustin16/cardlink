@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { getSupabaseClient } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n-client';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ export default function Signup() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  const { t, withLang } = useLanguage();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,7 +21,6 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      const supabase = getSupabaseClient();
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -27,9 +28,9 @@ export default function Signup() {
 
       if (error) throw error;
       setSuccess(true);
-      setTimeout(() => router.push('/marketplace'), 2000);
+      setTimeout(() => router.push(withLang('/marketplace')), 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to sign up');
+      setError(err instanceof Error ? err.message : t.auth.signUpFailed);
     } finally {
       setLoading(false);
     }
@@ -39,7 +40,7 @@ export default function Signup() {
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white dark:bg-zinc-800 rounded-lg shadow-md p-8">
         <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6 text-center">
-          Sign Up for CardMart
+          {t.auth.signupTitle}
         </h2>
 
         {error && (
@@ -50,7 +51,7 @@ export default function Signup() {
 
         {success && (
           <div className="mb-4 p-3 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-lg">
-            Account created successfully! Redirecting...
+            {t.auth.success}
           </div>
         )}
 
@@ -60,7 +61,7 @@ export default function Signup() {
               htmlFor="email"
               className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
             >
-              Email
+              {t.auth.email}
             </label>
             <input
               id="email"
@@ -77,7 +78,7 @@ export default function Signup() {
               htmlFor="password"
               className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
             >
-              Password
+              {t.auth.password}
             </label>
             <input
               id="password"
@@ -95,17 +96,17 @@ export default function Signup() {
             disabled={loading}
             className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Creating account...' : 'Sign Up'}
+            {loading ? t.auth.creatingAccount : t.auth.signUp}
           </button>
         </form>
 
         <p className="mt-4 text-center text-sm text-zinc-600 dark:text-zinc-400">
-          Already have an account?{' '}
+          {t.auth.haveAccount}{' '}
           <Link
-            href="/auth/login"
+            href={withLang('/auth/login')}
             className="text-blue-600 dark:text-blue-400 font-semibold"
           >
-            Sign In
+            {t.auth.signIn}
           </Link>
         </p>
       </div>

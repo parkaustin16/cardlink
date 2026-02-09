@@ -5,7 +5,8 @@
  * The overarching category (e.g., One Piece, Pokemon)
  */
 export interface Game {
-  id: string;
+  game_id: string;
+  slug: string;
   name: string; // The primary name of the game
 }
 
@@ -14,8 +15,10 @@ export interface Game {
  * Linked to catalog.sets
  */
 export interface SetLocalization {
+  set_id: string;
+  local_set_id: string;
   name: string;
-  language_code: 'kr' | 'en';
+  language: string;
 }
 
 /**
@@ -23,10 +26,11 @@ export interface SetLocalization {
  * Categories that cards fall into (e.g., Romance Dawn, Base Set)
  */
 export interface CardSet {
-  id: string;
+  set_id: string;
   game_id: string;
+  slug: string;
   name: string;           // Base/English name
-  set_code: string;       // e.g., "OP01"
+  code: string;           // e.g., "OP01"
   set_localizations?: SetLocalization[]; // Joined data
 }
 
@@ -36,7 +40,7 @@ export interface CardSet {
  */
 export interface CardLocalization {
   name: string;
-  language_code: 'kr' | 'en';
+  language: 'kr' | 'en';
 }
 
 /**

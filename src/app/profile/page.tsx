@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { supabase, Card, formatSupabaseError, errorForConsole } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n-client';
 import { User } from '@supabase/supabase-js';
 import CardItem from '@/components/CardItem';
 
@@ -12,17 +14,18 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { withLang } = useLanguage();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        router.push('/auth/login');
+        router.push(withLang('/auth/login'));
       } else {
         setUser(session.user);
         fetchUserCards(session.user.id);
       }
     });
-  }, [router]);
+  }, [router, withLang]);
 
   const fetchUserCards = async (userId: string) => {
     try {
@@ -39,7 +42,7 @@ export default function Profile() {
       setCards(data || []);
     } catch (err) {
       setError(formatSupabaseError(err));
-      console.error('Error fetching user cards:', errorForConsole(err));
+      console.error('Error fetching user cards:', errorForConsole('fetchUserCards', err));
     } finally {
       setLoading(false);
     }
@@ -78,12 +81,12 @@ export default function Profile() {
             <p className="text-zinc-600 dark:text-zinc-400 mb-4">
               You haven&apos;t listed any cards yet.
             </p>
-            <a
-              href="/sell"
+            <Link
+              href={withLang('/sell')}
               className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700"
             >
               List a Card
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { supabase, formatSupabaseError, errorForConsole } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/lib/i18n-client';
 import { User } from '@supabase/supabase-js';
 
 export default function SellCard() {
@@ -10,6 +11,7 @@ export default function SellCard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const { withLang } = useLanguage();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -24,12 +26,12 @@ export default function SellCard() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        router.push('/auth/login');
+        router.push(withLang('/auth/login'));
       } else {
         setUser(session.user);
       }
     });
-  }, [router]);
+  }, [router, withLang]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -60,7 +62,7 @@ export default function SellCard() {
 
       if (error) throw error;
 
-      router.push('/marketplace');
+      router.push(withLang('/marketplace'));
     } catch (err) {
       setError(formatSupabaseError(err));
       console.error('Error listing card:', errorForConsole(err));
