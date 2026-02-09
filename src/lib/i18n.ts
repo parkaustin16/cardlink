@@ -21,7 +21,7 @@ export const translations = {
     },
     home: {
       titlePrefix: 'Welcome to',
-      titleName: 'CardMart',
+      titleName: 'CardLink',
       subtitle:
         'The premier marketplace for trading cards. Buy, sell, and trade cards from your favorite games.',
       browseMarketplace: 'Browse Marketplace',
@@ -43,8 +43,8 @@ export const translations = {
       empty: 'Marketplace listings will appear here soon.',
     },
     auth: {
-      loginTitle: 'Sign In to CardMart',
-      signupTitle: 'Sign Up for CardMart',
+      loginTitle: 'Sign In to CardLink',
+      signupTitle: 'Sign Up for CardLink',
       email: 'Email',
       password: 'Password',
       signIn: 'Sign In',
@@ -64,6 +64,7 @@ export const translations = {
       empty: 'No games have been added yet.',
       viewSets: 'View sets and cards',
     },
+    games: {},
   },
   kr: {
     nav: {
@@ -75,7 +76,7 @@ export const translations = {
     },
     home: {
       titlePrefix: '환영합니다',
-      titleName: 'CardMart',
+      titleName: 'CardLink',
       subtitle:
         '트레이딩 카드의 대표 마켓플레이스. 좋아하는 게임의 카드를 사고, 팔고, 교환하세요.',
       browseMarketplace: '마켓플레이스 보기',
@@ -95,8 +96,8 @@ export const translations = {
       empty: '마켓플레이스 상품이 곧 표시됩니다.',
     },
     auth: {
-      loginTitle: 'CardMart 로그인',
-      signupTitle: 'CardMart 회원가입',
+      loginTitle: 'CardLink 로그인',
+      signupTitle: 'CardLink 회원가입',
       email: '이메일',
       password: '비밀번호',
       signIn: '로그인',
@@ -115,6 +116,10 @@ export const translations = {
       errorTitle: '게임을 불러올 수 없습니다',
       empty: '아직 등록된 게임이 없습니다.',
       viewSets: '세트와 카드 보기',
+    },
+    games: {
+      'one-piece': '원피스',
+      pokemon: '포켓몬',
     },
   },
 } as const;

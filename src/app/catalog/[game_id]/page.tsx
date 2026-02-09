@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import type { CardSet, Game } from '@/lib/supabase';
-import { normalizeLanguage, type Language } from '@/lib/i18n';
+import { normalizeLanguage, translations, type Language } from '@/lib/i18n';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -171,6 +171,12 @@ export default async function GameDetailPage({
 	const { game, errorMessage: gameError } = gameResult;
 	const { sets, localizations, errorMessage: setsError } = setsResult;
 	const langParam = language === 'en' ? '' : `?lang=${language}`;
+	const gameKey = (game?.slug ?? game?.name ?? '')
+		.trim()
+		.toLowerCase()
+		.replace(/\s+/g, '-');
+	const localizedGameName =
+		translations[language].games?.[gameKey] ?? game?.name;
 
 	return (
 		<div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
@@ -184,7 +190,7 @@ export default async function GameDetailPage({
 							Back to Catalog
 						</Link>
 						<h1 className="mt-3 text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-white">
-							{game?.name ?? 'Game'} Sets
+							{localizedGameName ?? 'Game'} Sets
 						</h1>
 						<p className="mt-3 text-lg text-zinc-600 dark:text-zinc-400">
 							Select a set to browse the cards.

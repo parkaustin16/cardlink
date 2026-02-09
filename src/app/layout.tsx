@@ -4,7 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "CardMart - Trading Card Marketplace",
+  title: "CardLink - Trading Card Marketplace",
   description: "Buy and sell trading cards from various games",
 };
 

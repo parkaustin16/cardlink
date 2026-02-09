@@ -83,6 +83,11 @@ export default function CatalogPage() {
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 							{games.map((game) => {
 								const gameSlug = game.slug?.trim() ?? '';
+								const gameKey = (gameSlug || game.name)
+									.trim()
+									.toLowerCase()
+									.replace(/\s+/g, '-');
+								const gameName = t.games?.[gameKey] ?? game.name;
 
 								return (
 									<Link
@@ -91,7 +96,7 @@ export default function CatalogPage() {
 										className="group rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-sm hover:shadow-md transition-shadow"
 									>
 										<h2 className="text-xl font-semibold text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
-											{game.name}
+											{gameName}
 										</h2>
 										<p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
 											{t.catalog.viewSets}
