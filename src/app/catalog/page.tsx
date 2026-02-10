@@ -12,6 +12,8 @@ export default function CatalogPage() {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(true);
 
+	const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 	useEffect(() => {
 		let isMounted = true;
 
@@ -94,7 +96,10 @@ export default function CatalogPage() {
 									? t.languageNames?.[languageCode] ?? languageCode.toUpperCase()
 									: null;
 								const baseGameName = t.games?.[gameKey] ?? game.name;
-								const displayName = languageLabel
+								const languageSuffixPattern = languageLabel
+									? new RegExp(`\\(${escapeRegExp(languageLabel)}\\)$`)
+									: null;
+								const displayName = languageLabel && !languageSuffixPattern?.test(baseGameName)
 									? `${baseGameName} (${languageLabel})`
 									: baseGameName;
 
