@@ -31,8 +31,12 @@ const getProductId = (product: Product, index: number) =>
 const getProductName = (product: Product) =>
   product.name ?? product.product_name ?? 'Sealed product';
 
-const getProductType = (product: Product) =>
-  product.product_type ?? product.category ?? product.type;
+const getProductType = (product: Product): string | null => {
+  const candidate = product.product_type ?? product.category ?? product.type;
+  return typeof candidate === 'string' && candidate.trim().length > 0
+    ? candidate
+    : null;
+};
 
 export default async function SetProductsPage({
   params,
