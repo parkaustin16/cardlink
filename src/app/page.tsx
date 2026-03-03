@@ -25,12 +25,6 @@ export default function Home() {
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <Link
-                href={withLang('/marketplace')}
-                className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-              >
-                {t.home.browseMarketplace}
-              </Link>
-              <Link
                 href={withLang('/catalog')}
                 className="px-8 py-3 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-lg font-semibold border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
               >

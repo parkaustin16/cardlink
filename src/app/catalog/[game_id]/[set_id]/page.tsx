@@ -13,11 +13,19 @@ interface SetPageProps {
 export default async function SetDetailPage({
 	params,
 	searchParams,
-}: SetPageProps & { searchParams?: { lang?: string } }) {
+}: SetPageProps & {
+	searchParams?:
+		| { lang?: string | string[] }
+		| Promise<{ lang?: string | string[] }>;
+}) {
 	const resolvedParams = await Promise.resolve(params);
+	const resolvedSearchParams = await Promise.resolve(searchParams);
 	const setSlug = resolvedParams.set_id;
 	const gameSlug = resolvedParams.game_id;
-	const language = normalizeLanguage(searchParams?.lang);
+	const rawLang = Array.isArray(resolvedSearchParams?.lang)
+		? resolvedSearchParams?.lang[0]
+		: resolvedSearchParams?.lang;
+	const language = normalizeLanguage(rawLang);
 	const t = translations[language];
 	const gameResult = await fetchGameId(gameSlug);
 	const setResult = await fetchSet(gameResult.gameId, setSlug, language);

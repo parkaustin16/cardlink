@@ -7,7 +7,7 @@ import type { Game } from '@/lib/supabase';
 import { useLanguage } from '@/lib/i18n-client';
 
 export default function CatalogPage() {
-	const { t, withLang, lang } = useLanguage();
+	const { t, withLang } = useLanguage();
 	const [games, setGames] = useState<Game[]>([]);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(true);
@@ -56,6 +56,14 @@ export default function CatalogPage() {
 						<p className="mt-3 text-lg text-zinc-600 dark:text-zinc-400">
 							{t.catalog.subtitle}
 						</p>
+						<div className="mt-4">
+							<Link
+								href={withLang('/sell')}
+								className="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
+							>
+								Create a Listing
+							</Link>
+						</div>
 					</div>
 
 					{errorMessage ? (

@@ -14,7 +14,7 @@ export const translations = {
   en: {
     nav: {
       marketplace: 'Marketplace',
-      sellCard: 'Sell Card',
+      sellCard: 'Create a Listing',
       profile: 'Profile',
       signOut: 'Sign Out',
       signIn: 'Sign In',
@@ -89,7 +89,7 @@ export const translations = {
   kr: {
     nav: {
       marketplace: '마켓플레이스',
-      sellCard: '카드 판매',
+      sellCard: '리스팅 만들기',
       profile: '프로필',
       signOut: '로그아웃',
       signIn: '로그인',

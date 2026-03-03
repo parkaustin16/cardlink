@@ -85,7 +85,7 @@ export default function Profile() {
               href={withLang('/sell')}
               className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700"
             >
-              List a Card
+              Create a Listing
             </Link>
           </div>
         ) : (
