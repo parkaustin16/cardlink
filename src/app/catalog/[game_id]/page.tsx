@@ -23,7 +23,7 @@ const fetchGame = async (
 	const { data: slugData, error: slugError } = await supabase
 		.from('games')
 		.select('game_id, name, slug')
-		.ilike('slug', `${normalizedSlug}%`)
+		.eq('slug', normalizedSlug)
 		.maybeSingle();
 
 	if (slugError) {
@@ -35,6 +35,24 @@ const fetchGame = async (
 
 	if (slugData) {
 		return { game: slugData, errorMessage: null };
+	}
+
+	const { data: legacySlugData, error: legacySlugError } = await supabase
+		.from('games')
+		.select('game_id, name, slug')
+		.ilike('slug', `${normalizedSlug}%`)
+		.limit(1)
+		.maybeSingle();
+
+	if (legacySlugError) {
+		return {
+			game: null,
+			errorMessage: legacySlugError.message,
+		};
+	}
+
+	if (legacySlugData) {
+		return { game: legacySlugData, errorMessage: null };
 	}
 
 	const isUuid =

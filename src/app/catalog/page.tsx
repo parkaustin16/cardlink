@@ -98,6 +98,7 @@ export default function CatalogPage() {
 									<Link
 										key={game.game_id}
 										href={withLang(`/catalog/${gameSlug}`)}
+										prefetch
 										className="group rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-sm hover:shadow-md transition-shadow"
 									>
 										<h2 className="text-xl font-semibold text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">

@@ -16,7 +16,7 @@ export const fetchGameId = async (
   const { data: slugData, error: slugError } = await supabase
     .from('games')
     .select('game_id')
-    .ilike('slug', `${normalizedSlug}%`)
+    .eq('slug', normalizedSlug)
     .maybeSingle();
 
   if (slugError) {
@@ -28,6 +28,24 @@ export const fetchGameId = async (
 
   if (slugData) {
     return { gameId: slugData.game_id, errorMessage: null };
+  }
+
+  const { data: legacySlugData, error: legacySlugError } = await supabase
+    .from('games')
+    .select('game_id')
+    .ilike('slug', `${normalizedSlug}%`)
+    .limit(1)
+    .maybeSingle();
+
+  if (legacySlugError) {
+    return {
+      gameId: null,
+      errorMessage: legacySlugError.message,
+    };
+  }
+
+  if (legacySlugData) {
+    return { gameId: legacySlugData.game_id, errorMessage: null };
   }
 
   const isUuid =
@@ -137,19 +155,34 @@ export const fetchSet = async (
     .from('sets')
     .select('set_id, game_id, name, code, slug')
     .eq('game_id', gameId)
+    .eq('slug', normalizedSlug)
+    .limit(1)
+    .maybeSingle();
+
+  if (data) {
+    return { set: data, localizedName: null, errorMessage: null };
+  }
+
+  const { data: fallbackData, error: fallbackError } = await supabase
+    .from('sets')
+    .select('set_id, game_id, name, code, slug')
+    .eq('game_id', gameId)
     .ilike('slug', normalizedSlug)
     .limit(1)
     .maybeSingle();
 
-  if (error || !data) {
+  if (error || fallbackError || !fallbackData) {
     return {
       set: null,
       localizedName: null,
-      errorMessage: error?.message ?? 'Unknown error fetching set',
+      errorMessage:
+        error?.message ??
+        fallbackError?.message ??
+        'Unknown error fetching set',
     };
   }
 
-  return { set: data, localizedName: null, errorMessage: null };
+  return { set: fallbackData, localizedName: null, errorMessage: null };
 };
 
 export const fetchSetLocalization = async (
