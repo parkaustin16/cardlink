@@ -21,11 +21,12 @@ interface ProductListingGroup {
   listings: Product[];
 }
 
-const fetchProducts = async (setId: string): Promise<Product[]> => {
+const fetchProducts = async (setId: string, language: string): Promise<Product[]> => {
   const { data, error } = await supabase
     .from('products')
     .select('*')
-    .eq('set_id', setId);
+    .eq('set_id', setId)
+    .eq('language', language);
 
   if (error || !data) {
     return [];
@@ -111,7 +112,7 @@ export default async function SetProductsPage({
   const gameResult = await fetchGameId(gameSlug);
   const setResult = await fetchSet(gameResult.gameId, setSlug, language);
   const products = setResult.set
-    ? await fetchProducts(setResult.set.set_id)
+    ? await fetchProducts(setResult.set.set_id, language)
     : [];
   const productListingGroups = groupProductListings(products);
   const localizedSetName = setResult.localizedName
