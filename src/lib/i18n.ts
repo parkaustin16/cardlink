@@ -23,7 +23,7 @@ export const translations = {
     },
     home: {
       titlePrefix: 'Welcome to',
-      titleName: 'CardJang',
+      titleName: 'BeaconsTCG',
       subtitle:
         'The premier marketplace for trading cards. Buy, sell, and trade cards from your favorite games.',
       browseMarketplace: 'Browse Marketplace',
@@ -45,8 +45,8 @@ export const translations = {
       empty: 'Marketplace listings will appear here soon.',
     },
     auth: {
-      loginTitle: 'Sign In to CardJang',
-      signupTitle: 'Sign Up for CardJang',
+      loginTitle: 'Sign In to BeaconsTCG',
+      signupTitle: 'Sign Up for BeaconsTCG',
       forgotPasswordTitle: 'Reset your password',
       forgotIdTitle: 'Recover your account',
       resetPasswordTitle: 'Set a new password',
@@ -154,7 +154,7 @@ export const translations = {
     },
     home: {
       titlePrefix: '환영합니다',
-      titleName: 'CardJang',
+      titleName: 'BeaconsTCG',
       subtitle:
         '트레이딩 카드의 대표 마켓플레이스. 좋아하는 게임의 카드를 사고, 팔고, 교환하세요.',
       browseMarketplace: '마켓플레이스 보기',
@@ -174,8 +174,8 @@ export const translations = {
       empty: '마켓플레이스 상품이 곧 표시됩니다.',
     },
     auth: {
-      loginTitle: 'CardJang 로그인',
-      signupTitle: 'CardJang 회원가입',
+      loginTitle: 'BeaconsTCG 로그인',
+      signupTitle: 'BeaconsTCG 회원가입',
       forgotPasswordTitle: '비밀번호 재설정',
       forgotIdTitle: '계정 복구',
       resetPasswordTitle: '새 비밀번호 설정',
