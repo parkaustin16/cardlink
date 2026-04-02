@@ -50,7 +50,7 @@ export default function Navbar() {
           <div className="flex">
             <Link href={withLang('/')} className="flex items-center">
               <span className="text-xl font-bold text-zinc-900 dark:text-white">
-                BeaconsTCG
+                CardJang
               </span>
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">

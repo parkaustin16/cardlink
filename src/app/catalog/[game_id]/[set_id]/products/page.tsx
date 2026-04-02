@@ -237,20 +237,20 @@ export default async function SetProductsPage({
               {t.catalog.backToSet}
             </Link>
             <h1 className="mt-3 text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-white">
-              {displayName ?? 'Set'} Products
+              {displayName ?? 'Set'} {t.catalog.productsTitleSuffix}
             </h1>
             <p className="mt-3 text-lg text-zinc-600 dark:text-zinc-400">
               {t.catalog.productsSubtitle}
             </p>
             <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/40 px-4 py-3">
-                <p className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Products</p>
+                <p className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">{t.catalog.productsTitleSuffix}</p>
                 <p className="mt-1 text-lg font-semibold text-zinc-900 dark:text-white">
                   {productListingGroups.length}
                 </p>
               </div>
               <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/40 px-4 py-3">
-                <p className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Total Listings</p>
+                <p className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">{t.catalog.totalListingsLabel}</p>
                 <p className="mt-1 text-lg font-semibold text-zinc-900 dark:text-white">
                   {totalListings}
                 </p>

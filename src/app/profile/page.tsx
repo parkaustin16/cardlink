@@ -42,7 +42,7 @@ export default function ProfilePage() {
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
 
   const router = useRouter();
-  const { withLang } = useLanguage();
+  const { t, withLang } = useLanguage();
 
   const listingStats = useMemo(() => {
     const totalListings = cards.length;
@@ -303,7 +303,7 @@ export default function ProfilePage() {
                 href={withLang('/sell')}
                 className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700"
               >
-                Create a Listing
+                {t.nav.sellCard}
               </Link>
             </div>
           </div>
@@ -374,7 +374,7 @@ export default function ProfilePage() {
                 href={withLang('/sell')}
                 className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700"
               >
-                Create a Listing
+                {t.nav.sellCard}
               </Link>
             </div>
           ) : (

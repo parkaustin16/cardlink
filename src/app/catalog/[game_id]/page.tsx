@@ -258,10 +258,10 @@ export default async function GameDetailPage({
 							href={`/catalog${langParam}`}
 							className="text-sm font-semibold text-blue-600 dark:text-blue-400"
 						>
-							Back to Catalog
+							{translations[language].home.browseCatalog}
 						</Link>
 						<h1 className="mt-3 text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-white">
-							{displayGameName} Sets
+							{displayGameName} {translations[language].catalog.setsTitleSuffix}
 						</h1>
 						<p className="mt-3 text-lg text-zinc-600 dark:text-zinc-400">
 							{translations[language].catalog.setsSubtitle}
@@ -271,7 +271,7 @@ export default async function GameDetailPage({
 					{gameError || setsError ? (
 						<div className="rounded-lg border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/30 p-6 text-center">
 							<p className="text-sm font-semibold text-red-700 dark:text-red-300">
-								Unable to load sets
+								{translations[language].catalog.setsErrorTitle}
 							</p>
 							<p className="mt-2 text-sm text-red-600 dark:text-red-400">
 								{gameError ?? setsError}
@@ -283,7 +283,7 @@ export default async function GameDetailPage({
 					) : sets.length === 0 ? (
 						<div className="rounded-lg border border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-10 text-center">
 							<p className="text-zinc-600 dark:text-zinc-400">
-								No sets have been added for this game yet.
+								{translations[language].catalog.setsEmpty}
 							</p>
 						</div>
 					) : (

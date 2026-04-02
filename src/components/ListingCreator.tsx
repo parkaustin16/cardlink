@@ -206,7 +206,7 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
   const [marketPrice, setMarketPrice] = useState<number | null>(null);
 
   const router = useRouter();
-  const { withLang } = useLanguage();
+  const { t, withLang } = useLanguage();
   const nameOptionsCacheRef = useRef(new Map<string, SearchOption[]>());
   const marketPriceCacheRef = useRef(new Map<string, number | null>());
   const nameQueryIdRef = useRef(0);
@@ -724,7 +724,7 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
         await tryInsertWithFallbacks('products', [detailedPayload, fallbackPayload]);
       }
 
-      setSuccessMessage('Listing created successfully. Redirecting...');
+      setSuccessMessage(t.listing.success);
       setTimeout(() => {
         router.push(withLang('/catalog'));
       }, 900);
@@ -743,9 +743,9 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
   if (!user) {
     return (
       <div className={containerClass}>
-        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">Create a Listing</h2>
+        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">{t.listing.title}</h2>
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          Sign in to create listings from anywhere in the catalog flow.
+          {t.listing.signInPrompt}
         </p>
         <Link
           href={withLang('/auth/login')}
@@ -759,10 +759,10 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
 
   return (
     <div className={containerClass}>
-      <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">Create a Listing</h2>
+      <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">{t.listing.title}</h2>
       {!compact ? (
         <p className="text-zinc-600 dark:text-zinc-400 mt-1 mb-6">
-          Add a card or sealed product listing with pricing and shipping details.
+          {t.listing.subtitle}
         </p>
       ) : null}
 
@@ -777,27 +777,27 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
 
       <form onSubmit={handleSubmit} className="space-y-8 mt-4">
         <section className="space-y-4">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Details</h3>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">{t.listing.details}</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <TypeableSelect
               id="listing-game"
-              label="Game"
+              label={t.listing.game}
               value={formData.gameLabel}
               onChange={(value) => setFormField('gameLabel', value)}
               options={gameLabels}
-              placeholder={loadingGames ? 'Loading games...' : 'Type or pick a game'}
+              placeholder={loadingGames ? t.listing.loadingGames : t.listing.pickGame}
               required
               disabled={loadingGames}
             />
 
             <TypeableSelect
               id="listing-set"
-              label="Set Name"
+              label={t.listing.setName}
               value={formData.setLabel}
               onChange={(value) => setFormField('setLabel', value)}
               options={setLabels}
-              placeholder={loadingSets ? 'Loading sets...' : 'Type or pick a set'}
+              placeholder={loadingSets ? t.listing.loadingSets : t.listing.pickSet}
               required
               disabled={!formData.gameId || loadingSets}
             />
@@ -805,7 +805,7 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Product Type</label>
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{t.listing.productType}</label>
               <div className="inline-flex w-full rounded-lg border border-zinc-300 dark:border-zinc-700 overflow-hidden">
                 <button
                   type="button"
@@ -822,7 +822,7 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
                       : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300'
                   }`}
                 >
-                  Single Card
+                  {t.listing.singleCard}
                 </button>
                 <button
                   type="button"
@@ -843,18 +843,18 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
                       : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300'
                   }`}
                 >
-                  Sealed Product
+                  {t.listing.sealedProduct}
                 </button>
               </div>
             </div>
 
             <TypeableSelect
               id="listing-item"
-              label="Product/Card Name"
+              label={t.listing.itemName}
               value={formData.itemName}
               onChange={(value) => setFormField('itemName', value)}
               options={itemLabels}
-              placeholder={loadingNames ? 'Loading names...' : 'Type or pick a card/product'}
+              placeholder={loadingNames ? t.listing.loadingNames : t.listing.pickItem}
               required
               disabled={!formData.gameId}
             />
@@ -865,17 +865,17 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <TypeableSelect
                   id="listing-rarity"
-                  label="Rarity"
+                  label={t.listing.rarity}
                   value={formData.rarity}
                   onChange={(value) => setFormField('rarity', value)}
                   options={rarityOptions}
-                  placeholder="Type or pick rarity"
+                  placeholder={t.listing.pickRarity}
                   required
                 />
 
                 <TypeableSelect
                   id="listing-condition"
-                  label="Condition"
+                  label={t.listing.condition}
                   value={formData.condition}
                   onChange={(value) => setFormField('condition', value)}
                   options={[...CONDITION_OPTIONS]}
@@ -886,16 +886,16 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <TypeableSelect
                   id="listing-printing"
-                  label="Printing"
+                  label={t.listing.printing}
                   value={formData.printing}
                   onChange={(value) => setFormField('printing', value)}
                   options={[...PRINTING_OPTIONS]}
-                  placeholder="Type or pick printing"
+                  placeholder={t.listing.pickPrinting}
                 />
 
                 <TypeableSelect
                   id="listing-language"
-                  label="Language"
+                  label={t.listing.language}
                   value={formData.language}
                   onChange={(value) => setFormField('language', value)}
                   options={[...LANGUAGE_OPTIONS]}
@@ -904,11 +904,11 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
 
                 <TypeableSelect
                   id="listing-finish"
-                  label="Finish"
+                  label={t.listing.finish}
                   value={formData.finish}
                   onChange={(value) => setFormField('finish', value)}
                   options={variantOptions}
-                  placeholder="Type or pick finish"
+                  placeholder={t.listing.pickFinish}
                 />
               </div>
             </>
@@ -916,7 +916,7 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <TypeableSelect
                 id="listing-language"
-                label="Language"
+                label={t.listing.language}
                 value={formData.language}
                 onChange={(value) => setFormField('language', value)}
                 options={[...LANGUAGE_OPTIONS]}
@@ -927,7 +927,7 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
 
           <div>
             <label htmlFor="listing-quantity" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
-              Quantity
+              {t.listing.quantity}
             </label>
             <input
               id="listing-quantity"
@@ -943,24 +943,24 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
         </section>
 
         <section className="space-y-4">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Pricing</h3>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">{t.listing.pricing}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="listing-market-price" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
-                Market Price (auto reference)
+                {t.listing.marketPrice}
               </label>
               <input
                 id="listing-market-price"
                 type="text"
                 readOnly
-                value={marketPrice === null ? 'No market reference found' : `$${marketPrice.toFixed(2)}`}
+                value={marketPrice === null ? t.listing.noMarketReference : `$${marketPrice.toFixed(2)}`}
                 className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
               />
             </div>
 
             <div>
               <label htmlFor="listing-sale-price" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
-                Sale Price
+                {t.listing.salePrice}
               </label>
               <input
                 id="listing-sale-price"
@@ -969,7 +969,7 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
                 step="0.01"
                 value={formData.salePrice}
                 onChange={(event) => setFormField('salePrice', event.target.value)}
-                placeholder="Required"
+                placeholder={t.listing.required}
                 required
                 className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white"
               />
@@ -978,11 +978,11 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
         </section>
 
         <section className="space-y-4">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Shipping</h3>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">{t.listing.shipping}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="listing-shipping-cost" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
-                Shipping Cost
+                {t.listing.shippingCost}
               </label>
               <input
                 id="listing-shipping-cost"
@@ -997,25 +997,25 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
 
             <TypeableSelect
               id="listing-shipping-method"
-              label="Shipping Method"
+              label={t.listing.shippingMethod}
               value={formData.shippingMethod}
               onChange={(value) => setFormField('shippingMethod', value)}
               options={[...SHIPPING_METHOD_OPTIONS]}
-              placeholder="Type or pick shipping method"
+              placeholder={t.listing.pickShippingMethod}
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label htmlFor="listing-handling-time" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
-                Handling Time
+                {t.listing.handlingTime}
               </label>
               <input
                 id="listing-handling-time"
                 type="text"
                 value={formData.handlingTime}
                 onChange={(event) => setFormField('handlingTime', event.target.value)}
-                placeholder="e.g. 1-2 business days"
+                placeholder={t.listing.handlingTimePlaceholder}
                 className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white"
               />
             </div>
@@ -1025,7 +1025,7 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
                 htmlFor="listing-domestic-shipping"
                 className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
               >
-                Domestic Shipping Price (placeholder)
+                {t.listing.domesticShippingPrice}
               </label>
               <input
                 id="listing-domestic-shipping"
@@ -1043,7 +1043,7 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
                 htmlFor="listing-international-shipping"
                 className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
               >
-                International Shipping Price (placeholder)
+                {t.listing.internationalShippingPrice}
               </label>
               <input
                 id="listing-international-shipping"
@@ -1063,7 +1063,7 @@ export default function ListingCreator({ compact = false }: ListingCreatorProps)
           disabled={loading}
           className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? 'Creating listing...' : 'Create a Listing'}
+          {loading ? t.listing.creating : t.listing.title}
         </button>
       </form>
     </div>

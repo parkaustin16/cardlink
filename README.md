@@ -1,4 +1,4 @@
-# BeaconsTCG - Trading Card Marketplace
+# CardJang - Trading Card Marketplace
 
 A modern web marketplace for trading cards built with Next.js, Node.js, and Supabase.
 
@@ -30,8 +30,8 @@ A modern web marketplace for trading cards built with Next.js, Node.js, and Supa
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/parkaustin16/beaconstcg.git
-cd beaconstcg
+git clone https://github.com/parkaustin16/cardjang.git
+cd cardjang
 ```
 
 ### 2. Install Dependencies
@@ -73,7 +73,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## Project Structure
 
 ```
-beaconstcg/
+cardjang/
 ├── src/
 │   ├── app/                  # Next.js app directory
 │   │   ├── auth/            # Authentication pages
