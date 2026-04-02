@@ -18,7 +18,7 @@ export default function LoginClient() {
   const { t, withLang } = useLanguage();
 
   useEffect(() => {
-    const remembered = window.localStorage.getItem('cardjang.rememberedEmail');
+    const remembered = window.localStorage.getItem('beaconstcg.rememberedEmail');
     if (remembered) {
       setEmail(remembered);
       setRememberEmail(true);
@@ -39,9 +39,9 @@ export default function LoginClient() {
       if (error) throw error;
 
       if (rememberEmail) {
-        window.localStorage.setItem('cardjang.rememberedEmail', email);
+        window.localStorage.setItem('beaconstcg.rememberedEmail', email);
       } else {
-        window.localStorage.removeItem('cardjang.rememberedEmail');
+        window.localStorage.removeItem('beaconstcg.rememberedEmail');
       }
 
       router.push(withLang('/catalog'));
